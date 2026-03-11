@@ -1,7 +1,7 @@
 # Data-Science-NYC-Housing-Project
 Nico Bonanno, Jake Samela, Emraan Kafihi
 
-This is the final project for our Data Science Fundamentals course at Wentworth Institute of Technology. Our project is analyzing New York City housing data to answer five questions below.
+This is the final project for our Data Science Fundamentals course at Wentworth Institute of Technology. Our project is analyzing New York City housing data to answer the five research questions below.
 
 ## Introduction
 - Why was the project undertaken?
@@ -25,7 +25,7 @@ We chose this dataset because it is large and contains many useful features rela
 The dataset contains 19 columns, which are:
 borough_x, block, lot, sale_price, zip_code, borough_y, yearbuilt, lotarea, bldgarea, resarea, comarea, unitsres, unitstotal, numfloors, latitude, longitude, landuse, bldgclass, and building_age.
 
-![Data Preview](figures/raw_data_preview.png)
+![Data Preview](figures/raw_data_example.png)
 
 ### Data Cleaning/Preview
 We created two additional features to improve the analysis:
