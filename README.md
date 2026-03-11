@@ -20,10 +20,23 @@ The purpose of our research was to determine the answers to the above questions 
 ## Selection of Data
 We selected a datsaet from Kaggle titled NYC Housing Prices. The dataset is included in this repo and can also be found here: https://www.kaggle.com/datasets/ishank2005/nyc-housing-prices-csv.
 
-We chose this data because it is robust and has several columns. It contains 34,439 rows, 236 of which we dropped because they had NaN values. The dataset has 19 columns and they are as follows: borough_x, block, lot, sale_price, zip_code, borough_y, yearbuilt, lotarea, bldgarea, resarea, comarea, unitsres, unitstotal, numfloors, latitude, longitude, landuse, bldgclass, and building_age.
+We chose this dataset because it is large and contains many useful features related to property characteristics and location. The dataset originally contained 34,439 rows, of which 236 were dropped due to missing values (NaN). After cleaning, the dataset contained 34,203 rows.
 
-### Data Preview
+The dataset contains 19 columns, which are:
+borough_x, block, lot, sale_price, zip_code, borough_y, yearbuilt, lotarea, bldgarea, resarea, comarea, unitsres, unitstotal, numfloors, latitude, longitude, landuse, bldgclass, and building_age.
 
+![Data Preview](figures/raw_data_preview.png)
+
+### Data Cleaning/Preview
+We created two additional features to improve the analysis:
+- Price per square foot, calculated as sale price divided by building area.
+- Log-transformed sale price, which was created to reduce skew in the sale price distribution.
+
+The sale price variable initially had a skew of about 3.29, indicating a highly right-skewed distribution. After applying the log transformation, the skew was reduced to -0.04, making the distribution more symmetric and better for regression and analysis.
+
+The data was cleaned by removing all rows with missing values. This resulted in the removal of 236 rows, representing only about 0.7% of the dataset, so the impact on the overall dataset was minimal.
+
+Additionally, several columns including zip_code, yearbuilt, and numfloors were converted from float values to integers to better represent categorical identifiers and count-based variables. We also verified that there were no rows containing negative sale prices or building areas less than or equal to zero, ensuring the data was valid for analysis.
 
 ## Methods
 
