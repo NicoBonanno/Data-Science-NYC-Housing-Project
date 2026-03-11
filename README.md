@@ -25,9 +25,10 @@ We chose this dataset because it is large and contains many useful features rela
 The dataset contains 19 columns, which are:
 borough_x, block, lot, sale_price, zip_code, borough_y, yearbuilt, lotarea, bldgarea, resarea, comarea, unitsres, unitstotal, numfloors, latitude, longitude, landuse, bldgclass, and building_age.
 
+#### Data Preview
 ![Data Preview](figures/raw_data_example.png)
 
-### Data Cleaning/Preview
+#### Data Cleaning/Feature Engineering
 We created two additional features to improve the analysis:
 - Price per square foot, calculated as sale price divided by building area.
 - Log-transformed sale price, which was created to reduce skew in the sale price distribution.
