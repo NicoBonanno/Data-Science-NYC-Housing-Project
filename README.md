@@ -58,7 +58,14 @@ To answer the research questions, we used techniques including grouping, filteri
 - RQ5: 
 
 ## Results
+#### Research Question 1: Do sale prices differ significantly by borough?
+To answer this question, we calculated both the median and average sale prices for properties in each of the five boroughs.
 
+![Median Sale Price](figures/median_price_by_borough.png)
+
+![Average Sale Price](figures/average_price_by_borough.png)
+
+The results show clear differences in property values across the boroughs. Manhattan and Brooklyn have higher median sale prices compared to the Bronx, Queens, and Staten Island. A similar pattern appears when examining the average sale prices, where Manhattan and Brooklyn also have the highest values among the five boroughs. These results indicate that property sale prices vary across boroughs in New York City.
 
 ## Discussion
 
