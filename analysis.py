@@ -9,7 +9,19 @@ df = pd.read_csv("Dataset/nyc_housing_base.csv")
 #Drop rows with missing values. 236 rows were dropped which is only about 0.7% of the dataset
 df = df.dropna()
 
+#Convert data types
+df["zip_code"] = df["zip_code"].astype(int)
+df["yearbuilt"] = df["yearbuilt"].astype(int)
+df["unitsres"] = df["unitsres"].astype(int)
+df["unitstotal"] = df["unitstotal"].astype(int)
+df["numfloors"] = df["numfloors"].astype(int)
+df["landuse"] = df["landuse"].astype(int)
+df["building_age"] = df["building_age"].astype(int)
+
 #Inspect data
+pd.set_option("display.max_columns", None)
+print(df.head())
+
 print("Shape:", df.shape)
 print("\nColumns:")
 print(df.columns)
