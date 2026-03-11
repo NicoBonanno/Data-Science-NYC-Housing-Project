@@ -40,7 +40,22 @@ The data was cleaned by removing all rows with missing values. This resulted in 
 Additionally, several columns including zip_code, yearbuilt, and numfloors were converted from float values to integers to better represent categorical identifiers and count-based variables. We also verified that there were no rows containing negative sale prices or building areas less than or equal to zero, ensuring the data was valid for analysis.
 
 ## Methods
+#### Tools:
+- Python for writing code
+- Pandas and Numpy for data analysis and manipluation
+- Matplotlib for creating visuals
+- Github for version control
+- VS Code as IDE
 
+#### Analytical Methods
+To answer the research questions, we used techniques including grouping, filtering, and aggregation using the Pandas library. Visualizations were created using Matplotlib to compare property characteristics across boroughs and other variables. For the machine learning component of the project, a regression model will be applied to analyze the relationship between building characteristics and sale price. (we can adjust this as we go).
+
+#### Research Question Distribution
+- RQ1: Nico
+- RQ2: Jake
+- RQ3: Emraan
+- RQ4: 
+- RQ5: 
 
 ## Results
 
