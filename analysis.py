@@ -74,7 +74,37 @@ plt.show()
 
 
 #Research Question 3: Is zip code a determinant of sale price?
+#Get top 20 zip codes by number of sales for readability
+top_zips = df["zip_code"].value_counts().head(20).index
+df_top = df[df["zip_code"].isin(top_zips)]
 
+#Use numpy to calculate median and mean sale price per zip code
+zip_stats = df_top.groupby("zip_code")["sale_price"].agg(
+    median=lambda x: np.median(x),
+    mean=lambda x: np.mean(x)
+).reset_index()
+
+#Compute median sale price by zip code and create bar chart
+zip_median = zip_stats.sort_values("median", ascending=False)
+plt.bar(zip_median["zip_code"].astype(str), zip_median["median"] / 1000000)
+plt.xlabel("Zip Code")
+plt.ylabel("Median Sale Price (Millions $)")
+plt.title("Median Sale Price by Zip Code (Top 20 by Volume)")
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+plt.savefig("figures/median_price_by_zipcode.png")
+plt.show()
+
+#Compute average sale price by zip code and create bar chart
+zip_mean = zip_stats.sort_values("mean", ascending=False)
+plt.bar(zip_mean["zip_code"].astype(str), zip_mean["mean"] / 1000000)
+plt.xlabel("Zip Code")
+plt.ylabel("Average Sale Price (Millions $)")
+plt.title("Average Sale Price by Zip Code (Top 20 by Volume)")
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+plt.savefig("figures/average_price_by_zipcode.png")
+plt.show()
 
 
 #Research Question 4: Does building age affect sale price?
