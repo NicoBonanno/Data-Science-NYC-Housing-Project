@@ -68,7 +68,7 @@ To answer this question, we calculated both the median and average sale prices f
 The results show clear differences in property values across the boroughs. Manhattan and Brooklyn have higher median sale prices compared to the Bronx, Queens, and Staten Island. A similar pattern appears when examining the average sale prices, where Manhattan and Brooklyn also have the highest values among the five boroughs. These results indicate that property sale prices vary across boroughs in New York City.
 
 #### Research Question 3: Is zip code a determinant of sale price?
-To answer this question, we calculated both the median and average sale prices for properties in the top 20 zip codes by sales volume.
+To answer this question, we calculated both the median and average sale prices for properties in the top 20 zip codes by sales volume. There were 180 zip codes, and we believe that will make the chart messy and won't work so we narrowed it down to the top 20 zip codes by sales volume.
 
 ![Median Sale Price](figures/median_price_by_zipcode.png)
 
