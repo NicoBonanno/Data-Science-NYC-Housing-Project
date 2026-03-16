@@ -2,6 +2,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
 
 #Read data
 df = pd.read_csv("Dataset/nyc_housing_base.csv")
@@ -31,15 +34,6 @@ print(df.isnull().sum())
 
 print((df["sale_price"] == 0).sum())
 print((df["bldgarea"] == 0).sum())
-
-print("Sale price skew:", df["sale_price"].skew())
-
-#Feature Engineering - Take log transform of sale price to reduce skewness and help with regression
-df["log_sale_price"] = np.log(df["sale_price"])
-
-#Compare skew of sale price before and after log transform
-print("Original sale price skew:", df["sale_price"].skew())
-print("Log sale price skew:", df["log_sale_price"].skew())
 
 #Feature Engineering - create price per square foot feature
 df["price_per_sqft"] = df["sale_price"] / df["bldgarea"]
@@ -112,3 +106,72 @@ plt.show()
 
 
 #Research Question 5: Can we accurately predict the sale price using building characteristics?
+# Remove extreme outliers for price, price per square foot and building area(top and bottom 1%)
+lower = df["sale_price"].quantile(0.01)
+upper = df["sale_price"].quantile(0.99)
+df = df[(df["sale_price"] >= lower) & (df["sale_price"] <= upper)]
+
+lower = df["price_per_sqft"].quantile(0.01)
+upper = df["price_per_sqft"].quantile(0.99)
+df = df[(df["price_per_sqft"] >= lower) & (df["price_per_sqft"] <= upper)]
+
+lower = df["bldgarea"].quantile(0.01)
+upper = df["bldgarea"].quantile(0.99)
+df = df[(df["bldgarea"] >= lower) & (df["bldgarea"] <= upper)]
+
+#Define features
+features = [
+    "bldgarea",
+    "lotarea",
+    "building_age",
+    "unitsres",
+    "numfloors",
+    "resarea",
+    "comarea",
+    "price_per_sqft",
+    "borough_x",
+    "zip_code",
+]
+
+X = df[features]
+y = df["sale_price"]
+
+#Train model
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+#Compute R² and RMSE for performance
+r2 = r2_score(y_test, y_pred)
+print("R² Score:", r2)
+
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+print("RMSE:", rmse)
+
+#Plot the results
+# Convert to millions for plotting
+actual_m = y_test / 1_000_000
+pred_m = y_pred / 1_000_000
+
+plt.scatter(actual_m, pred_m, alpha=0.4, label="Predicted Prices")
+
+# Perfect prediction line
+plt.plot(
+    [actual_m.min(), actual_m.max()],
+    [actual_m.min(), actual_m.max()],
+    color="red",
+    label="Perfect Prediction"
+)
+
+plt.xlabel("Actual Sale Price (Millions $)")
+plt.ylabel("Predicted Sale Price (Millions $)")
+plt.title("Actual vs Predicted Sale Price")
+
+plt.legend()
+plt.savefig("figures/regression_act_vs_pred.png")
+plt.show()
