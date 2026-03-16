@@ -55,7 +55,7 @@ To answer the research questions, we used techniques including grouping, filteri
 - RQ2: Jake
 - RQ3: Emraan
 - RQ4: 
-- RQ5: 
+- RQ5: Nico
 
 ## Results
 #### Research Question 1: Do sale prices differ significantly by borough?
@@ -67,14 +67,23 @@ To answer this question, we calculated both the median and average sale prices f
 
 The results show clear differences in property values across the boroughs. Manhattan and Brooklyn have higher median sale prices compared to the Bronx, Queens, and Staten Island. A similar pattern appears when examining the average sale prices, where Manhattan and Brooklyn also have the highest values among the five boroughs. These results indicate that property sale prices vary across boroughs in New York City.
 
+#### Research Question 2: Does the number of residential units affect sale price per square foot?
+
+
 #### Research Question 3: Is zip code a determinant of sale price?
-To answer this question, we calculated both the median and average sale prices for properties in the top 20 zip codes by sales volume. There were 180 zip codes, and we believe that will make the chart messy and won't work so we narrowed it down to the top 20 zip codes by sales volume.
+To answer this question, we calculated both the median and average sale prices for properties within the top 20 ZIP codes by sales volume. The dataset contains 180 unique ZIP codes, and plotting all of them would produce an overly cluttered visualization. Therefore, the analysis focuses on the 20 ZIP codes with the highest sales volume.
 
 ![Median Sale Price](figures/median_price_by_zipcode.png)
 
 ![Average Sale Price](figures/average_price_by_zipcode.png)
 
-The results show clear differences in property values across zip codes. Zip codes in Manhattan (102xx range) and Brooklyn (112xx range) have a way higher median and average sales price compared to buildings in other zip codes. These results indicate that zip codes are associated with sale price,meaning it plays a big factor of property values in New York City.
+The results show clear variation in property values across ZIP codes. Many of the ZIP codes with the highest median and average sale prices fall within the 100xx and 112xx ranges, which correspond to Manhattan and Brooklyn, while ZIP codes from other boroughs generally show lower property values.
+
+#### Research Question 4: Does building age affect sale price?
+
+
+#### Research Question 5: Can we accurately predict the sale price using building characteristics?
+
 
 ## Discussion
 
