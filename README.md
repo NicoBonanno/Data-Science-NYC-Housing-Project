@@ -74,6 +74,8 @@ To answer this question the first thing that we did was create a sale price per 
 ![Units vs price per square foot bins](figures/Units vs price per sqaure foot bins.png)
 
 
+As you can see in these results as the number of residential units increases the price decreases this is present in all three of the figures that are shown above. This could be due to many different real world factors, intutivly people would prefer to live in an area that is not overwhelmed with people even if they are living in a city this can cause buildings with less residential units tend to have higher price per sqaure feet.
+
 
 
 
