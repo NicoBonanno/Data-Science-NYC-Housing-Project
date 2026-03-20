@@ -65,7 +65,15 @@ To answer this question, we calculated both the median and average sale prices f
 The results show clear differences in property values across the boroughs. Manhattan and Brooklyn have higher median sale prices compared to the Bronx, Queens, and Staten Island. A similar pattern appears when examining the average sale prices, where Manhattan and Brooklyn also have the highest values among the five boroughs. These results indicate that property sale prices vary across boroughs in New York City.
 
 #### Research Question 2: Does the number of residential units affect sale price per square foot?
-To answer this question the first thing that we did was create a sale price per square foot metric this was done by taking the sale price and dividing it by the square footage of the building. First looking at the number of residential units vs the price per square foot the following is shown:
+To answer this question the first thing that we did was create a sale price per square foot metric this was done by taking the sale price and dividing it by the square footage of the building. We will show three plots below first is just the units vs price per square foot, the second is the same scatterplot, but the we will show the log of the price per square foot to get a better view of the distribution of the data. The last figure that will be shown a bin model of the number of residential units that are binned in 0, 1, 2, 5, 10, 20, 50, 100, 500 and then we will see the resulting output of price per square foot.
+
+![Units Vs Price per Square Foot](figures/Units vs price per square foot.png)
+
+![Units vs Log Price per Square Foot](figures/Units vs log price per sqaure foot.png)
+
+![Units vs price per square foot bins](figures/Units vs price per sqaure foot bins.png)
+
+
 
 
 
