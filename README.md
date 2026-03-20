@@ -67,11 +67,11 @@ The results show clear differences in property values across the boroughs. Manha
 #### Research Question 2: Does the number of residential units affect sale price per square foot?
 To answer this question the first thing that we did was create a sale price per square foot metric this was done by taking the sale price and dividing it by the square footage of the building. We will show three plots below first is just the units vs price per square foot, the second is the same scatterplot, but the we will show the log of the price per square foot to get a better view of the distribution of the data. The last figure that will be shown a bin model of the number of residential units that are binned in 0, 1, 2, 5, 10, 20, 50, 100, 500 and then we will see the resulting output of price per square foot.
 
-![Units Vs Price per Square Foot](figures/Units vs price per square foot.png)
+![Units Vs Price per Square Foot](figures/units_vs_log_price_per_square_foot.png)
 
-![Units vs Log Price per Square Foot](figures/Units vs log price per sqaure foot.png)
+![Units vs Log Price per Square Foot](figures/units_vs_price_per_square_foot_no_log.png)
 
-![Units vs price per square foot bins](figures/Units vs price per sqaure foot bins.png)
+![Units vs price per square foot bins](figures/units_vs_price_per_square_foot_bin.png)
 
 
 As you can see in these results as the number of residential units increases the price decreases this is present in all three of the figures that are shown above. This could be due to many different real world factors, intutivly people would prefer to live in an area that is not overwhelmed with people even if they are living in a city this can cause buildings with less residential units tend to have higher price per sqaure feet.
