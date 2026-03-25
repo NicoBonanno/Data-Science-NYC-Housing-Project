@@ -2,9 +2,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.preprocessing import StandardScaler
 
 #Read data
 df = pd.read_csv("Dataset/nyc_housing_base.csv")
@@ -100,78 +99,90 @@ plt.tight_layout()
 plt.savefig("figures/average_price_by_zipcode.png")
 plt.show()
 
-
 #Research Question 4: Does building age affect sale price?
 
 
 
-#Research Question 5: Can we accurately predict the sale price using building characteristics?
-# Remove extreme outliers for price, price per square foot and building area(top and bottom 1%)
-lower = df["sale_price"].quantile(0.01)
-upper = df["sale_price"].quantile(0.99)
-df = df[(df["sale_price"] >= lower) & (df["sale_price"] <= upper)]
+#Research Question 5: How are building area and residential units associated with sale price?
+#Prepare data
+df_reg = df.copy()
 
-lower = df["price_per_sqft"].quantile(0.01)
-upper = df["price_per_sqft"].quantile(0.99)
-df = df[(df["price_per_sqft"] >= lower) & (df["price_per_sqft"] <= upper)]
+#Remove outliers in sale price and building area (top and bottom 5%)
+price_lower = df_reg["sale_price"].quantile(0.05)
+price_upper = df_reg["sale_price"].quantile(0.95)
+df_reg = df_reg[
+    (df_reg["sale_price"] >= price_lower) & (df_reg["sale_price"] <= price_upper)
+].copy()
 
-lower = df["bldgarea"].quantile(0.01)
-upper = df["bldgarea"].quantile(0.99)
-df = df[(df["bldgarea"] >= lower) & (df["bldgarea"] <= upper)]
+area_lower = df_reg["bldgarea"].quantile(0.05)
+area_upper = df_reg["bldgarea"].quantile(0.95)
+df_reg = df_reg[
+    (df_reg["bldgarea"] >= area_lower) & (df_reg["bldgarea"] <= area_upper)
+].copy()
 
-#Define features
-features = [
-    "bldgarea",
-    "lotarea",
-    "building_age",
-    "unitsres",
-    "numfloors",
-    "resarea",
-    "comarea",
-    "price_per_sqft",
-    "borough_x",
-    "zip_code",
-]
+#Create log-transformed variables to reduce skewness
+df_reg["log_price"] = np.log(df_reg["sale_price"])
+df_reg["log_bldgarea"] = np.log(df_reg["bldgarea"])
 
-X = df[features]
-y = df["sale_price"]
-
-#Train model
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+#Cap very extreme residential unit values for cleaner visualization
+df_reg["unitsres_capped"] = df_reg["unitsres"].clip(
+    upper=df_reg["unitsres"].quantile(0.99)
 )
 
+#Set features
+features = ["log_bldgarea", "unitsres_capped"]
+
+#Set target and predictors
+X = df_reg[features]
+y = df_reg["log_price"]
+
+#Standardize predictors so coefficients are comparable
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+#Fit model on full filtered dataset
 model = LinearRegression()
-model.fit(X_train, y_train)
+model.fit(X_scaled, y)
 
-y_pred = model.predict(X_test)
+#Print intercept and coefficients
+print("Intercept:", model.intercept_)
 
-#Compute R² and RMSE for performance
-r2 = r2_score(y_test, y_pred)
-print("R² Score:", r2)
+coefficients = pd.DataFrame({
+    "Feature": features,
+    "Coefficient": model.coef_
+}).sort_values(by="Coefficient", key=abs, ascending=False)
 
-rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-print("RMSE:", rmse)
+print("\nRegression Coefficients:")
+print(coefficients)
 
-#Plot the results
-# Convert to millions for plotting
-actual_m = y_test / 1_000_000
-pred_m = y_pred / 1_000_000
+#Plot building area trend
+df_area = df_reg.copy()
 
-plt.scatter(actual_m, pred_m, alpha=0.4, label="Predicted Prices")
+df_area["bin"] = pd.qcut(df_area["log_bldgarea"], q=20, duplicates="drop")
+grouped = df_area.groupby("bin")["log_price"].median()
 
-# Perfect prediction line
-plt.plot(
-    [actual_m.min(), actual_m.max()],
-    [actual_m.min(), actual_m.max()],
-    color="red",
-    label="Perfect Prediction"
-)
+centers = np.array([interval.mid for interval in grouped.index], dtype=float)
 
-plt.xlabel("Actual Sale Price (Millions $)")
-plt.ylabel("Predicted Sale Price (Millions $)")
-plt.title("Actual vs Predicted Sale Price")
+plt.figure()
+plt.plot(centers, grouped.values, marker="o")
+plt.xlabel("Log Building Area")
+plt.ylabel("Log Sale Price")
+plt.title("Trend of Log Sale Price vs Log Building Area")
+plt.savefig("figures/trend_log_price_vs_area.png")
+plt.show()
 
-plt.legend()
-plt.savefig("figures/regression_act_vs_pred.png")
+#Plot residential units trend
+df_units = df_reg.copy()
+
+df_units["bin"] = pd.qcut(df_units["unitsres_capped"], q=20, duplicates="drop")
+grouped = df_units.groupby("bin", observed=False)["log_price"].median()
+
+centers = np.array([interval.mid for interval in grouped.index], dtype=float)
+
+plt.figure()
+plt.plot(centers, grouped.values, marker="o")
+plt.xlabel("Residential Units")
+plt.ylabel("Log Sale Price")
+plt.title("Trend of Log Sale Price vs Residential Units")
+plt.savefig("figures/trend_log_price_vs_unitsres.png")
 plt.show()

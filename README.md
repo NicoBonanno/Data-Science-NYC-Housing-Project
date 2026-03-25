@@ -5,20 +5,20 @@ This is the final project for our Data Science Fundamentals course (COMP 3125) a
 
 ## Introduction
 #### Why was the project undertaken?
-We chose to do our project on this topic because we had a shared interest in economics, and housing prices are a significant facet of the economy. We wanted to apply the techniques we have learned in class and through research to a meaningful, real-world project that would allow us to understand the role some of the factors outlined below play in the housing market.
+We chose to do our project on this topic because we had a shared interest in economics, and housing prices are a significant facet of the economy. We wanted to apply the techniques learned in class to a meaningful, real-world dataset in order to understand how various building characteristics influence housing prices in New York City.
 
 #### Research Questions:
 1) Do sale prices differ significantly by borough?
 2) Does the number of residential units affect sale price per square foot?
 3) Is zip code a determinant of sale price?
 4) Does building age affect sale price?
-5) Can we accurately predict the sale price using building characteristics?
+5) How are building area and residential units associated with sale price?
 
 #### Purpose:
-The purpose of our research was to determine the answers to the above questions and to gather information on the housing situation in New York City, one of the largest cities in the world. We wanted to test whether some of these factors such as the borough and the building age of the house had an impact on sale price. 
+The purpose of our research was to determine the answers to the above questions and to gather information on the housing situation in New York City, one of the largest cities in the world. We aimed to test whether factors such as location and building characteristics have a measurable impact on sale price. 
 
 ## Selection of Data
-We selected a datsaet from Kaggle titled NYC Housing Prices. The dataset is included in this repo and can also be found here: https://www.kaggle.com/datasets/ishank2005/nyc-housing-prices-csv.
+We selected a dataset from Kaggle titled NYC Housing Prices. The dataset is included in this repo and can also be found here: https://www.kaggle.com/datasets/ishank2005/nyc-housing-prices-csv.
 
 We chose this dataset because it is large and contains many useful features related to property characteristics and location. The dataset originally contained 34,439 rows, of which 236 were dropped due to missing values (NaN). After cleaning, the dataset contained 34,203 rows.
 
@@ -41,17 +41,18 @@ Additionally, several columns including zip_code, yearbuilt, and numfloors were 
 - Python for writing code
 - Pandas and Numpy for data analysis and manipluation
 - Matplotlib for creating visuals
+- Scikit-learn (sklearn) for implementing the linear regression model
 - Github for version control
 - VS Code as IDE
 
 #### Analytical Methods
-To answer the research questions, we used techniques including grouping, filtering, and aggregation using the Pandas library. Visualizations were created using Matplotlib to compare property characteristics across boroughs and other variables. For the machine learning component of the project, a regression model will be applied to analyze the relationship between building characteristics and sale price. (we can adjust this as we go).
+To answer the research questions, we used techniques including grouping, filtering, and aggregation using the Pandas library. Visualizations were created using Matplotlib to compare property characteristics across boroughs and other variables. For the machine learning component of the project, a linear regression model was applied to analyze the relationship between building characteristics and sale price. The model was used to examine how selected variables are associated with housing prices rather than to make predictions.
 
 #### Research Question Distribution
 - RQ1: Nico
 - RQ2: Jake
 - RQ3: Emraan
-- RQ4: 
+- RQ4: Emraan
 - RQ5: Nico
 
 ## Results
@@ -65,19 +66,15 @@ To answer this question, we calculated both the median and average sale prices f
 The results show clear differences in property values across the boroughs. Manhattan and Brooklyn have higher median sale prices compared to the Bronx, Queens, and Staten Island. A similar pattern appears when examining the average sale prices, where Manhattan and Brooklyn also have the highest values among the five boroughs. These results indicate that property sale prices vary across boroughs in New York City.
 
 #### Research Question 2: Does the number of residential units affect sale price per square foot?
-To answer this question the first thing that we did was create a sale price per square foot metric this was done by taking the sale price and dividing it by the square footage of the building. We will show three plots below first is just the units vs price per square foot, the second is the same scatterplot, but the we will show the log of the price per square foot to get a better view of the distribution of the data. The last figure that will be shown a bin model of the number of residential units that are binned in 0, 1, 2, 5, 10, 20, 50, 100, 500 and then we will see the resulting output of price per square foot.
-
-![Units Vs Price per Square Foot](figures/units_vs_log_price_per_square_foot.png)
+To answer this question, the first thing we did was create a sale price per square foot metric. This was done by taking the sale price and dividing it by the building area. There are three plots shown below to analyze this. First is the units vs price per square foot, the second is the same scatterplot, but with the log of the price per square foot to reduce skewness. The last is a bin model of the number of residential units that are binned in 0, 1, 2, 5, 10, 20, 50, 100, and 500, and plotted is the resulting output of price per square foot.
 
 ![Units vs Log Price per Square Foot](figures/units_vs_price_per_square_foot_no_log.png)
 
+![Units Vs Price per Square Foot](figures/units_vs_log_price_per_square_foot.png)
+
 ![Units vs price per square foot bins](figures/units_vs_price_per_square_foot_bin.png)
 
-
-As you can see in these results as the number of residential units increases the price decreases this is present in all three of the figures that are shown above. This could be due to many different real world factors, intutivly people would prefer to live in an area that is not overwhelmed with people even if they are living in a city this can cause buildings with less residential units tend to have higher price per sqaure feet.
-
-
-
+As illustrated by these results, as the number of residential units increases the price decreases. This trend is present in all three of the figures. This pattern may be explained by real-world factors. Intuitively, people may prefer to live in less densely populated environments, even within a city, which can lead to higher prices per square foot for properties with fewer residential units.
 
 #### Research Question 3: Is zip code a determinant of sale price?
 To answer this question, we calculated both the median and average sale prices for properties within the top 20 ZIP codes by sales volume. The dataset contains 180 unique ZIP codes, and plotting all of them would produce an overly cluttered visualization. Therefore, the analysis focuses on the 20 ZIP codes with the highest sales volume.
@@ -91,38 +88,25 @@ The results show clear variation in property values across ZIP codes. Many of th
 #### Research Question 4: Does building age affect sale price?
 
 
-#### Research Question 5: Can we accurately predict the sale price using building characteristics?
-To address this question, we trained a linear regression model to predict the sale price of a property based on several building characteristics from the dataset.
+#### Research Question 5: How are building area and residential units associated with sale price?
+To answer this question, we applied a linear regression model to examine the relationship between building area, number of residential units, and sale price. The log of the sale price was used as the response variable. We also used the log of building area as one of the predictors. The log values of these variables were used to reduce skewness.
 
-Before training the model, we performed additional preprocessing steps to improve the stability of the regression. We removed extreme outliers by filtering out the top and bottom 1% of sale prices, prices per square foot, and building area. These steps helped reduce the influence of unusually priced and sized properties that could distort the regression results.
+The regression model included two predictor variables:
 
-The following features were used as predictors in the regression model:
+- log of building area
+- number of residential units (unitsres)
 
-- bldgarea (building area)
-- lotarea (lot area)
-- building_age
-- unitsres (number of residential units)
-- numfloors
-- resarea (residential floor area)
-- comarea (commercial floor area)
-- price_per_sqft (engineered feature representing sale price divided by building area)
-- borough_x
-- zip_code
+The regression coefficients show that building area has a positive relationship with sale price, while the number of residential units has a negative relationship. This indicates that, holding other factors constant, larger buildings tend to be associated with higher sale prices, while properties with more residential units tend to have lower sale prices per property.
 
-The dataset was then split into training and testing sets using an 80/20 train-test split. The regression model was trained on the training data and used to generate predictions for the testing data.
+![Building_Area_Trend](figures/trend_log_price_vs_area.png)
 
-The performance of the model was evaluated using the R² score and Root Mean Squared Error (RMSE).
+The figure above shows the relationship between building area and sale price using a binned trend plot. As building area increases, sale price generally increases as well. However, the relationship is somewhat noisy, especially for very large buildings, where there are fewer observations.
 
-The model achieved:
+![Residential_Units_Trend](figures/trend_log_price_vs_unitsres.png)
 
-R² Score: 0.3756
-RMSE: $739,950
+The figure above shows the relationship between the number of residential units and sale price. As the number of residential units increases, the sale price generally decreases. This pattern is more consistent than the building area relationship and suggests that properties with more units tend to have lower sale prices per property.
 
-The following figure shows a comparison between the actual sale prices and the predicted sale prices generated by the regression model.
-
-![Actual vs. Predicted Sale Prices](figures/regression_act_vs_pred.png)
-
-The scatter plot above compares the actual sale prices with the predicted sale prices generated by the regression model. The red line represents perfect predictions, where the predicted value would equal the actual sale price. Overall, the model demonstrates a moderate ability to predict housing prices based on the selected building characteristics, as reflected by the reported R² score and RMSE.
+Overall, the regression results indicate that both building area and residential units are associated with sale price. Building area shows a positive relationship, while residential units show a negative relationship. Although the relationships are not perfectly linear, the model provides a clear and interpretable view of how these building characteristics relate to housing prices.
 
 ## Discussion
 
