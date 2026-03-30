@@ -89,26 +89,40 @@ The results show clear variation in property values across ZIP codes. Many of th
 
 
 #### Research Question 5: How are building area and residential units associated with sale price?
-To answer this question, we applied a linear regression model to examine the relationship between building area, number of residential units, and sale price. The log of the sale price was used as the response variable. We also used the log of building area as one of the predictors. The log values of these variables were used to reduce skewness.
+To answer this question, we applied linear regression models to examine how building area and the number of residential units are associated with sale price. Because sale price was highly skewed, the logarithm of sale price was used as the response variable. Building area was also log-transformed to improve the relationship with price. We also removed the top and bottom five percent of the sale price and building area variables to remove outliers. Extreme values in the residential units variable were capped by removing the top one percent.
 
-The regression model included two predictor variables:
+Three regression models were created for this analysis. The first model used only building area as a predictor, the second used only the number of residential units, and the third used both variables together. This allowed us to compare how well each variable explains variation in sale price both individually and combined.
 
-- log of building area
-- number of residential units (unitsres)
+![Building Area Regression](figures/regression_log_price_vs_area.png)
 
-The regression coefficients show that building area has a positive relationship with sale price, while the number of residential units has a negative relationship. This indicates that, holding other factors constant, larger buildings tend to be associated with higher sale prices, while properties with more residential units tend to have lower sale prices per property.
+The figure above shows the regression of log sale price on building area. The relationship appears weak, with a slight overall trend but a large amount of variation in the data.
 
-![Building_Area_Trend](figures/trend_log_price_vs_area.png)
+![Residential Units Regression](figures/regression_log_price_vs_unitsres.png)
 
-The figure above shows the relationship between building area and sale price using a binned trend plot. As building area increases, sale price generally increases as well. However, the relationship is somewhat noisy, especially for very large buildings, where there are fewer observations.
+The figure above shows the regression of log sale price on the number of residential units. This relationship is clearer, showing a negative trend where sale price tends to decrease as the number of units increases.
 
-![Residential_Units_Trend](figures/trend_log_price_vs_unitsres.png)
+The R² values for the three models were relatively low. The model using building area alone had an R² of approximately 0.066, the model using residential units alone had an R² of approximately 0.106, and the model using both variables had an R² of approximately 0.108. These results indicate that neither variable strongly explains variation in sale price, and that combining them only slightly improves the model.
 
-The figure above shows the relationship between the number of residential units and sale price. As the number of residential units increases, the sale price generally decreases. This pattern is more consistent than the building area relationship and suggests that properties with more units tend to have lower sale prices per property.
-
-Overall, the regression results indicate that both building area and residential units are associated with sale price. Building area shows a positive relationship, while residential units show a negative relationship. Although the relationships are not perfectly linear, the model provides a clear and interpretable view of how these building characteristics relate to housing prices.
+Overall, the regression results suggest that building area and residential units are associated with sale price, but they are not strong predictors on their own. Residential units show a slightly more consistent relationship, while building area has a weaker and more variable effect. These findings suggest that other factors, particularly location-based variables, likely play a more significant role in determining housing prices.
 
 ## Discussion
+The results of this analysis provide insight into the factors that influence housing prices in New York City and highlight the relative importance of different types of variables. Location-based factors such as borough and ZIP code showed strong and consistent differences in sale price, indicating that geographic location plays a major role in determining property values. This is important because it suggests that where a property is located may have a greater impact on price than certain structural characteristics of the building itself.
 
+The regression analysis examined how building area and the number of residential units are associated with sale price using three separate models. While both variables showed some relationship with sale price, the overall explanatory power of the models was low. The R² values for all three models were relatively small, indicating that these variables alone do not strongly explain variation in housing prices. Although the number of residential units showed a slightly stronger relationship than building area, combining both variables resulted in only a minimal improvement in the model.
+
+These findings are consistent with general expectations in housing market research, where location is often considered one of the most important determinants of property value. While structural characteristics such as size and number of units do influence price, they are typically not sufficient on their own to fully explain differences in property values.
+
+The results also suggest that additional factors not included in this analysis, such as neighborhood quality, proximity to amenities, property condition, and broader economic conditions, likely play a significant role in determining housing prices. This highlights the complexity of the housing market and the limitations of simple regression models using a small number of variables.
+
+For future research, incorporating additional features such as building classification or economic indicators would likely improve the explanatory power of the models. More advanced modeling techniques could also be explored to better capture relationships and interactions between variables.
+
+From a tools and methods perspective, this project demonstrated the effectiveness of Python libraries such as Pandas and NumPy for data cleaning and manipulation, Matplotlib for visualization, and Scikit-learn for implementing regression models. These tools allowed for efficient data analysis and helped translate raw data into meaningful insights about housing prices.
+
+Overall, the results emphasize that housing price determination is influenced by many interconnected factors, and that simple models provide useful but limited insight into these relationships.
 
 ## Summary
+This project analyzed New York City housing data to understand how location and building characteristics influence sale price. The results showed that property values vary significantly across boroughs and ZIP codes, with Manhattan and Brooklyn generally having higher prices than other areas.
+
+The analysis also found that as the number of residential units increases, the price per square foot tends to decrease. Additionally, regression results indicated that building area and residential units are associated with sale price, but neither variable alone strongly explains price variation.
+
+Overall, the findings suggest that while structural characteristics do have some influence, location plays a much more significant role in determining housing prices. These results highlight the complexity of the housing market and the importance of considering multiple factors when analyzing property values.

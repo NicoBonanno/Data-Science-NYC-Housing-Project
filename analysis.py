@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import r2_score
 
 #Read data
 df = pd.read_csv("Dataset/nyc_housing_base.csv")
@@ -63,8 +63,7 @@ plt.savefig("figures/average_price_by_borough.png")
 plt.show()
 
 #Research Question 2: Does the number of residential units affect sale price per square foot?
-
-
+#PLEASE SEE THE JUPYTER NOTEBOOK IN THE REPO FOR THIS CODE.
 
 #Research Question 3: Is zip code a determinant of sale price?
 #Get top 20 zip codes by number of sales for readability
@@ -129,60 +128,97 @@ df_reg["unitsres_capped"] = df_reg["unitsres"].clip(
     upper=df_reg["unitsres"].quantile(0.99)
 )
 
-#Set features
-features = ["log_bldgarea", "unitsres_capped"]
-
-#Set target and predictors
-X = df_reg[features]
+#Model 1: log_bldgarea -> log_price
+X1 = df_reg[["log_bldgarea"]]
 y = df_reg["log_price"]
 
-#Standardize predictors so coefficients are comparable
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+model_area = LinearRegression()
+model_area.fit(X1, y)
 
-#Fit model on full filtered dataset
-model = LinearRegression()
-model.fit(X_scaled, y)
+y_pred_area = model_area.predict(X1)
+r2_area = r2_score(y, y_pred_area)
 
-#Print intercept and coefficients
-print("Intercept:", model.intercept_)
+print("Model 1: Building Area Only")
+print("Intercept:", model_area.intercept_)
+print("Coefficient:", model_area.coef_[0])
+print("R^2:", r2_area)
+print(f"Equation: log_price = {model_area.intercept_:.4f} + ({model_area.coef_[0]:.4f} * log_bldgarea)")
+print()
 
-coefficients = pd.DataFrame({
-    "Feature": features,
-    "Coefficient": model.coef_
-}).sort_values(by="Coefficient", key=abs, ascending=False)
-
-print("\nRegression Coefficients:")
-print(coefficients)
-
-#Plot building area trend
-df_area = df_reg.copy()
-
-df_area["bin"] = pd.qcut(df_area["log_bldgarea"], q=20, duplicates="drop")
-grouped = df_area.groupby("bin")["log_price"].median()
-
-centers = np.array([interval.mid for interval in grouped.index], dtype=float)
+#Plot Model 1
+x_area = np.sort(df_reg["log_bldgarea"].values)
+y_line_area = model_area.intercept_ + model_area.coef_[0] * x_area
 
 plt.figure()
-plt.plot(centers, grouped.values, marker="o")
+plt.scatter(df_reg["log_bldgarea"], df_reg["log_price"], alpha=0.2)
+plt.plot(x_area, y_line_area, color = 'red', linewidth=2)
 plt.xlabel("Log Building Area")
 plt.ylabel("Log Sale Price")
-plt.title("Trend of Log Sale Price vs Log Building Area")
-plt.savefig("figures/trend_log_price_vs_area.png")
+plt.title("Linear Regression: Log Sale Price vs Log Building Area")
+plt.savefig("figures/regression_log_price_vs_area.png")
 plt.show()
 
-#Plot residential units trend
-df_units = df_reg.copy()
+#Model 2: unitsres_capped -> log_price
+X2 = df_reg[["unitsres_capped"]]
 
-df_units["bin"] = pd.qcut(df_units["unitsres_capped"], q=20, duplicates="drop")
-grouped = df_units.groupby("bin", observed=False)["log_price"].median()
+model_units = LinearRegression()
+model_units.fit(X2, y)
 
-centers = np.array([interval.mid for interval in grouped.index], dtype=float)
+y_pred_units = model_units.predict(X2)
+r2_units = r2_score(y, y_pred_units)
+
+print("Model 2: Residential Units Only")
+print("Intercept:", model_units.intercept_)
+print("Coefficient:", model_units.coef_[0])
+print("R^2:", r2_units)
+print(f"Equation: log_price = {model_units.intercept_:.4f} + ({model_units.coef_[0]:.4f} * unitsres_capped)")
+print()
+
+#Plot Model 2
+x_units = np.sort(df_reg["unitsres_capped"].values)
+y_line_units = model_units.intercept_ + model_units.coef_[0] * x_units
 
 plt.figure()
-plt.plot(centers, grouped.values, marker="o")
+plt.scatter(df_reg["unitsres_capped"], df_reg["log_price"], alpha=0.2)
+plt.plot(x_units, y_line_units, color = 'red', linewidth=2)
 plt.xlabel("Residential Units")
 plt.ylabel("Log Sale Price")
-plt.title("Trend of Log Sale Price vs Residential Units")
-plt.savefig("figures/trend_log_price_vs_unitsres.png")
+plt.title("Linear Regression: Log Sale Price vs Residential Units")
+plt.tight_layout()
+plt.savefig("figures/regression_log_price_vs_unitsres.png")
 plt.show()
+
+#Model 3: log_bldgarea + unitsres_capped -> log_price
+X3 = df_reg[["log_bldgarea", "unitsres_capped"]]
+
+model_both = LinearRegression()
+model_both.fit(X3, y)
+
+y_pred_both = model_both.predict(X3)
+r2_both = r2_score(y, y_pred_both)
+
+print("Model 3: Building Area + Residential Units")
+print("Intercept:", model_both.intercept_)
+print("Coefficients:")
+print("  log_bldgarea:", model_both.coef_[0])
+print("  unitsres_capped:", model_both.coef_[1])
+print("R^2:", r2_both)
+print(
+    f"Equation: log_price = {model_both.intercept_:.4f} "
+    f"+ ({model_both.coef_[0]:.4f} * log_bldgarea) "
+    f"+ ({model_both.coef_[1]:.4f} * unitsres_capped)"
+)
+print()
+
+#Compare R^2 values
+r2_comparison = pd.DataFrame({
+    "Model": [
+        "Building Area Only",
+        "Residential Units Only",
+        "Building Area + Residential Units"
+    ],
+    "R^2": [r2_area, r2_units, r2_both]
+})
+
+print("R^2 Comparison:")
+print(r2_comparison)
