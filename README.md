@@ -53,7 +53,7 @@ To answer the research questions, we used techniques including grouping, filteri
 - RQ2: Jake
 - RQ3: Emraan
 - RQ4: Emraan
-- RQ5: Nico
+- RQ5: Nico/Jake
 
 ## Results
 #### Research Question 1: Do sale prices differ significantly by borough?
