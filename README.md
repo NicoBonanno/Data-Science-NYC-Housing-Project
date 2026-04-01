@@ -86,6 +86,12 @@ To answer this question, we calculated both the median and average sale prices f
 The results show clear variation in property values across ZIP codes. Many of the ZIP codes with the highest median and average sale prices fall within the 100xx and 112xx ranges, which correspond to Manhattan and Brooklyn, while ZIP codes from other boroughs generally show lower property values.
 
 #### Research Question 4: Does building age affect sale price?
+To answer this question, we grouped properties into building age ranges and calculated both the median and average sale prices for each group.
+
+![Median Sale Price](figures/median_price_by_building_age.png)
+![Average Sale Price](figures/average_price_by_building_age.png)
+
+The results show an interesting pattern, newer buildings (between 0-25 years) and very old buildings (usually 150+ years) have the highest sale prices, while mid-age buildings (between 51-75 years) have the lowest. This shows that building age does play a role in sale prices in New York City. New buildings and historic old buildings usually cost more.
 
 
 #### Research Question 5: How are building area and residential units associated with sale price?

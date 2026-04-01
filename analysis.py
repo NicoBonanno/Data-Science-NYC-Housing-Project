@@ -99,6 +99,34 @@ plt.savefig("figures/average_price_by_zipcode.png")
 plt.show()
 
 #Research Question 4: Does building age affect sale price?
+#Bin building age into groups
+bins = [0, 25, 50, 75, 100, 125, 150, 225]
+labels = ['0-25', '26-50', '51-75', '76-100', '101-125', '126-150', '150+']
+df['age_group'] = pd.cut(df['building_age'], bins=bins, labels=labels, right=True)
+
+#Use numpy to calculate median and mean sale price per age group
+age_stats = df.groupby('age_group', observed=True)['sale_price'].agg(
+    median=lambda x: np.median(x),
+    mean=lambda x: np.mean(x)
+).reset_index()
+
+#Compute median sale price by building age group and create bar chart
+plt.bar(age_stats['age_group'].astype(str), age_stats['median'] / 1000000, color='steelblue', edgecolor='white')
+plt.xlabel('Building Age (Years)')
+plt.ylabel('Median Sale Price (Millions $)')
+plt.title('Median Sale Price by Building Age Group')
+plt.tight_layout()
+plt.savefig('figures/median_price_by_building_age.png')
+plt.show()
+
+#Compute average sale price by building age group and create bar chart
+plt.bar(age_stats['age_group'].astype(str), age_stats['mean'] / 1000000, color='steelblue', edgecolor='white')
+plt.xlabel('Building Age (Years)')
+plt.ylabel('Average Sale Price (Millions $)')
+plt.title('Average Sale Price by Building Age Group')
+plt.tight_layout()
+plt.savefig('figures/average_price_by_building_age.png')
+plt.show()
 
 
 
