@@ -128,8 +128,6 @@ plt.tight_layout()
 plt.savefig('figures/average_price_by_building_age.png')
 plt.show()
 
-
-
 #Research Question 5: How are building area and residential units associated with sale price?
 #Prepare data
 df_reg = df.copy()
