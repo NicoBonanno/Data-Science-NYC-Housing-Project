@@ -76,7 +76,7 @@ zip_stats = df_top.groupby("zip_code")["sale_price"].agg(
     mean=lambda x: np.mean(x)
 ).reset_index()
 
-#Compute median sale price by zip code and create bar chart
+#Plot median sale price by zip code
 zip_median = zip_stats.sort_values("median", ascending=False)
 plt.bar(zip_median["zip_code"].astype(str), zip_median["median"] / 1000000)
 plt.xlabel("Zip Code")
@@ -87,7 +87,7 @@ plt.tight_layout()
 plt.savefig("figures/median_price_by_zipcode.png")
 plt.show()
 
-#Compute average sale price by zip code and create bar chart
+#Plot average sale price by zip code
 zip_mean = zip_stats.sort_values("mean", ascending=False)
 plt.bar(zip_mean["zip_code"].astype(str), zip_mean["mean"] / 1000000)
 plt.xlabel("Zip Code")
@@ -110,7 +110,7 @@ age_stats = df.groupby('age_group', observed=True)['sale_price'].agg(
     mean=lambda x: np.mean(x)
 ).reset_index()
 
-#Compute median sale price by building age group and create bar chart
+#Plot median sale price by building age group
 plt.bar(age_stats['age_group'].astype(str), age_stats['median'] / 1000000, color='steelblue', edgecolor='white')
 plt.xlabel('Building Age (Years)')
 plt.ylabel('Median Sale Price (Millions $)')
@@ -119,7 +119,7 @@ plt.tight_layout()
 plt.savefig('figures/median_price_by_building_age.png')
 plt.show()
 
-#Compute average sale price by building age group and create bar chart
+#Plot average sale price by building age group
 plt.bar(age_stats['age_group'].astype(str), age_stats['mean'] / 1000000, color='steelblue', edgecolor='white')
 plt.xlabel('Building Age (Years)')
 plt.ylabel('Average Sale Price (Millions $)')
