@@ -93,7 +93,6 @@ To answer this question, we grouped properties into building age ranges and calc
 
 The results show an interesting pattern, newer buildings (between 0-25 years) and very old buildings (usually 150+ years) have the highest sale prices, while mid-age buildings (between 51-75 years) have the lowest. This shows that building age does play a role in sale prices in New York City. New buildings and historic old buildings usually cost more.
 
-
 #### Research Question 5: How are building area and residential units associated with sale price?
 To answer this question, we applied linear regression models to examine how building area and the number of residential units are associated with sale price. Because sale price was highly skewed, the logarithm of sale price was used as the response variable. Building area was also log-transformed to improve the relationship with price. We also removed the top and bottom five percent of the sale price and building area variables to remove outliers. Extreme values in the residential units variable were capped by removing the top one percent.
 
